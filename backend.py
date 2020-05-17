@@ -58,13 +58,14 @@ def clean_up(df, threshold, field):
     '''
 
     clean_df = df.copy()
-    series = df[field].unique()
+    series = df[field]
     counts = df[field].value_counts(sort=True)
+    unique = series.unique()
 
     print(counts)
-    for i,str1 in enumerate(series):
-        for str2 in series[i+1:]:
-            dist = distance(str1,str2)/2*(len(str1) + len(str2))
+    for i,str1 in enumerate(unique):
+        for str2 in unique[i+1:]:
+            dist = 2*distance(str1,str2)/(len(str1) + len(str2))
             if (dist > 0) and (dist <= threshold):
                 if counts[str2] < counts[str1]:
                     canon = str1
@@ -72,8 +73,9 @@ def clean_up(df, threshold, field):
                 else:
                     canon = str2
                     abr = str1
-                clean_df.replace(to_replace=abr,value=canon,inplace=True)
+                series.replace(to_replace=abr,value=canon,inplace=True)
 
+    clean_df[field] = series
     return clean_df
 
 
@@ -99,10 +101,10 @@ data_bottin['job_lower'] = data_bottin['job'].copy()
 data_bottin['job_lower'].str.lower()
 filter = '^\s*\w+(?:\s?\(.*\)\s*)?\s*$'
 treated = data_bottin['name'].str.match(filter)
-print('Avant le nettoyage{}'.format(len(data_bottin['street_clean'].unique())))
-data_bottin = clean_up(data_bottin,0.2,'street_clean')
-print('Après le nettoyage{}'.format(len(data_bottin['street_clean'].unique())))
-data_bottin.to_csv('Clean_group_1')
+print('Avant le nettoyage {}'.format(len(data_bottin['street_clean'].unique())))
+clean_bottin = clean_up(data_bottin,0.2,'street_clean')
+print('Après le nettoyage {}'.format(len(clean_bottin['street_clean'].unique())))
+clean_bottin.to_csv('Clean_new.csv')
 exit(0)
 df_one_word = data_bottin.loc[treated].copy()
 data_bottin = data_bottin.loc[~treated]
