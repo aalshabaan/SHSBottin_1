@@ -58,8 +58,10 @@ def clean_up(df, threshold, field):
     '''
 
     clean_df = df.copy()
-    series = pd.Series(df[field].unique())
-    counts = series.value_counts(sort=True)
+    series = df[field].unique()
+    counts = df[field].value_counts(sort=True)
+
+    print(counts)
     for i,str1 in enumerate(series):
         for str2 in series[i+1:]:
             dist = distance(str1,str2)/2*(len(str1) + len(str2))
@@ -93,7 +95,7 @@ def split_frame(df, split_criteria,output_list):
 # Load data
 data_bottin = pd.read_csv('./bottin_data_groupe_1.csv').dropna()
 
-'''data_bottin['job_lower'] = data_bottin['job'].copy()
+data_bottin['job_lower'] = data_bottin['job'].copy()
 data_bottin['job_lower'].str.lower()
 filter = '^\s*\w+(?:\s?\(.*\)\s*)?\s*$'
 treated = data_bottin['name'].str.match(filter)
@@ -104,9 +106,8 @@ data_bottin.to_csv('Clean_group_1')
 exit(0)
 df_one_word = data_bottin.loc[treated].copy()
 data_bottin = data_bottin.loc[~treated]
-
 '''
-clean = pd.read_csv('./Clean_group_1')
+clean = pd.read_csv('./Clean_group_1.csv')
 
 #gb_name = df_one_word.groupby('name')
 lst_lil_frames = split_frame(clean,['name', 'job_lower'],[])
@@ -114,7 +115,7 @@ lst_lil_frames = split_frame(clean,['name', 'job_lower'],[])
 for lil_frame in lst_lil_frames:
 
     print(lil_frame.to_string(header=False))
-    print('-'*20)
+    print('-'*20)'''
 
 
 '''np.random.seed(0)
