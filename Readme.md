@@ -6,7 +6,7 @@ Plus d'infos : [Page wiki du Bot](http://wikipast.epfl.ch/wiki/BottinBot1)
 
 ## Utilisation:
 
-Le bot peut être lancé sur des données non processées ou bien des données préprocessées a moyen du flag `--pre_process` qui doit prendre les valeurs `1` pour  ou `False`.
+Le bot peut être lancé sur des données non processées ou bien des données préprocessées a moyen du flag `--pre_process` qui doit prendre les valeurs `1` pour des  ou `False`.
 
 
 
