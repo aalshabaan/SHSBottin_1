@@ -10,7 +10,7 @@ Le bot peut être lancé sur des données non processées ou bien des données p
 
 L'argument `--file_name` est utilisé pour indiquer un fichier CSV ou bien un fichier Pickle de données préprocessées. 
 
-Note : le fichier .csv généré par le bot est nommé `save.pkl`
+Note : le fichier .pkl généré par le bot est nommé `save.pkl`
 
 ### Exemple d'utilisation
 
