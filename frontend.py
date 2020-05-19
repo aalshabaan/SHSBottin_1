@@ -19,9 +19,9 @@ def get_wiki_text(page, section=None):
 
 
 def input_character(data_bottin):
-    address = data_bottin['street_clean'][0]
-    job = data_bottin['job_lower'][0]
-    name = data_bottin['name'][0]
+    address = data_bottin['street_clean'].iat[0]
+    job = data_bottin['job_lower'].iat[0]
+    name = data_bottin['name'].iat[0]
     title = '{} - {} ({})'.format(name, job, address)
     text = []
     years = []

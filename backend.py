@@ -113,13 +113,12 @@ def main_process(pargs):
     filename = pargs.file_name
     preprocess = pargs.pre_process
 
-    data_bottin = pd.read_csv(filename).dropna()
-    print('Initial count :', data_bottin.shape[0])
-    data_bottin['job_lower'] = data_bottin['job'].copy()
-    data_bottin['job_lower'].str.lower()
-    data_bottin['url'] = data_bottin.apply(entry2url, axis=1)
-
     if preprocess:
+        data_bottin = pd.read_csv(filename).dropna()
+        print('Initial count :', data_bottin.shape[0])
+        data_bottin['job_lower'] = data_bottin['job'].copy()
+        data_bottin['job_lower'].str.lower()
+        data_bottin['url'] = data_bottin.apply(entry2url, axis=1)
         names = []
         clean_streets = clean_up(data_bottin, 0.2, 'street_clean')
         clean_streets = clean_number(clean_streets)
@@ -137,21 +136,23 @@ def main_process(pargs):
     #     print(name.to_string(header=False))
     #     print('-'*50)
 
-        print('Pages created :', len(names))
+
         with open('save.pkl', 'wb+') as file:
             pickle.dump(names, file)
     else:
         # retieve from pickle
-        with open('save.pkl', 'rb') as file:
+        with open(filename, 'rb') as file:
             names = pickle.load(file)
-
-    #TODO call Che
 
     frontend.connect()
 
-    for person in names:
-        frontend.input_character(person)
-
+    for i,person in enumerate(names):
+        try:
+            frontend.input_character(person)
+        except KeyError as err:
+            print(i,person,err)
+            exit(1)
+    print('Pages created :', len(names))
     print('Export finished')
 
 
@@ -162,13 +163,14 @@ if __name__ == '__main__':
     parser.add_argument('--file_name',
                         required=True,
                         type=str,
-                        help='Location to the file containing entries to be uploaded to wikipast'
+                        help='Location to the file containing entries to be uploaded to wikipast\n'
+                             'Either a CSV if preprocessing is required or a pre-processd pickle'
                         )
 
     parser.add_argument('--pre_process',
                         required=True,
-                        type=bool,
-                        help='Indicate if pre-processing (clean-up) needs to be done'
+                        type=int,
+                        help='Indicate if pre-processing (clean-up) needs to be done, 0 if already pre-processed'
                         )
 
     args = parser.parse_args()
